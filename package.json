@@ -1,0 +1,30 @@
+{
+  "name": "cardano-v2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/strattonite/cardano-v2.git"
+  },
+  "author": "strattonite",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/strattonite/cardano-v2/issues"
+  },
+  "homepage": "https://github.com/strattonite/cardano-v2#readme",
+  "dependencies": {
+    "@emurgo/cardano-serialization-lib-nodejs": "^9.1.2",
+    "bip39": "^3.0.4",
+    "blakejs": "^1.1.1",
+    "borc": "^3.0.0",
+    "bs58": "^4.0.1",
+    "cbor": "^8.1.0",
+    "crc": "^3.8.0",
+    "ed25519-hd-key": "^1.2.0",
+    "js-sha3": "^0.8.0"
+  }
+}
