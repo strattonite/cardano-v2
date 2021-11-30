@@ -6,7 +6,6 @@ const createWallet = require("./management/create-wallets");
 const buildTx = require("./transactions/build");
 const subTx = require("./transactions/submit");
 const poll = require("./management/poll");
-const { EventEmitter } = require("events");
 
 app.use(json());
 app.listen(process.env.PORT);

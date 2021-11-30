@@ -17,14 +17,20 @@
   },
   "homepage": "https://github.com/strattonite/cardano-v2#readme",
   "dependencies": {
+    "@blockfrost/blockfrost-js": "^2.0.2",
     "@emurgo/cardano-serialization-lib-nodejs": "^9.1.2",
+    "axios": "^0.24.0",
     "bip39": "^3.0.4",
     "blakejs": "^1.1.1",
+    "body-parser": "^1.19.0",
     "borc": "^3.0.0",
     "bs58": "^4.0.1",
     "cbor": "^8.1.0",
     "crc": "^3.8.0",
+    "dotenv": "^10.0.0",
     "ed25519-hd-key": "^1.2.0",
-    "js-sha3": "^0.8.0"
+    "express": "^4.17.1",
+    "js-sha3": "^0.8.0",
+    "mongodb": "^4.2.0"
   }
 }
