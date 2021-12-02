@@ -35,21 +35,16 @@ const getWallets = async () => {
   return w;
 };
 
+let n = 0;
 const pollWallets = async () => {
-  const sleep = async () => new Promise((resolve) => setTimeout(resolve, 2000));
-  while (true) {
-    let ws = wallets;
-    for (const w of ws) {
-      poll(w);
-      await sleep();
-    }
-  }
+  await poll(wallets[n % wallets.length]);
+  n++;
 };
 
 const findWallet = async (n) => wallets.filter(({ name }) => name == n)[0];
 
 const getInt = setInterval(getWallets, 2500);
-pollWallets();
+const pollInt = setInterval(pollWallets, 1 / process.env.RATE_LIMIT);
 
 app.get(
   "/wallets",
@@ -97,6 +92,7 @@ app.post(
 
 const shutdown = () => {
   clearInterval(getInt);
+  clearInterval(pollInt);
 };
 
 process.on("SIGINT", shutdown);
