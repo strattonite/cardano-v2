@@ -34,7 +34,7 @@ const getEntropy = () => {
 };
 
 const fromEntropy = (ent) => {
-  const key = serialization.Bip32PrivateKey.from_bip39_entropy(
+  let key = serialization.Bip32PrivateKey.from_bip39_entropy(
     ent,
     Buffer.from("")
   );
@@ -50,7 +50,11 @@ const fromEntropy = (ent) => {
     serialization.NetworkInfo.mainnet().network_id(),
     serialization.StakeCredential.from_keyhash(utxoPub.to_raw_key().hash()),
     serialization.StakeCredential.from_keyhash(stake.to_raw_key().hash())
-  );
+  )
+    .to_address()
+    .to_bech32("addr");
+
+  key = key.to_bech32();
 
   return {
     key,
