@@ -1,3 +1,3 @@
-const {create} = require("./management/create-wallets");
+const create = require("./management/create-wallets");
 
-console.log(create())
+create({ name: "test" }).then((wallet) => console.log(wallet));
