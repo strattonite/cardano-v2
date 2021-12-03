@@ -81,7 +81,7 @@ app.post(
           id = err.message;
           success = false;
         }
-        return { id, success };
+        return { id, success, name };
       })
     );
 
