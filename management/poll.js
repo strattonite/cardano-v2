@@ -17,7 +17,7 @@ console.log(apis.length);
 let n = 0;
 
 const check = (wallet, utxos) =>
-  utxos.every(({ tx_hash }) => wallet.utxos.some((u) => u.tx_hash == tx_hash));
+  wallet.utxos.some((u) => u.tx_hash == utxos[0].tx_hash);
 
 /**
  * @param {import("./db").MongoWallet} wallet
@@ -32,8 +32,10 @@ const poll = async (wallet) => {
       order: "desc",
     });
     utxos = addNew(wallet.utxos, utxos_);
-    if (!check(wallet, utxos)) {
-      ({ lovelaces, tokens } = await poolCheck(wallet));
+    if (!check(wallet, utxos_)) {
+      console.log("checking balance")(
+        ({ lovelaces, tokens } = await poolCheck(wallet))
+      );
 
       wallet.balance = lovelaces;
       wallet.assets = tokens;
@@ -52,6 +54,9 @@ const poll = async (wallet) => {
         }
       );
       return wallet;
+    } else {
+      console.log(utxos_);
+      console.log(wallet.utxos);
     }
   } catch (err) {
     if (err.response?.status == 404 || err.status_code == 404) {
@@ -97,12 +102,13 @@ const poolCheck = async (wallet) => {
 };
 
 const addNew = (oldArr, newArr) => {
-  oldArr = oldArr
+  let oldArr_ = [...oldArr];
+  oldArr_ = oldArr_
     .concat(
-      newArr.filter((el) => !oldArr.some((val) => el.tx_hash == val.tx_hash))
+      newArr.filter((el) => !oldArr_.some((val) => el.tx_hash == val.tx_hash))
     )
     .sort((tx1, tx2) => tx2.block - tx1.block);
-  return oldArr;
+  return oldArr_;
 };
 
 /**
