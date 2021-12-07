@@ -1,4 +1,4 @@
-import { MessageEmbed, WebhookClient } from "discord.js";
+const { MessageEmbed, WebhookClient } = require("discord.js");
 
 const client = new WebhookClient({
   id: process.env.WEBHOOK_ID,

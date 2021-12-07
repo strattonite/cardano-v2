@@ -7,8 +7,6 @@ const subTx = require("./transactions/submit");
 const { poll } = require("./management/poll");
 const hooks = require("./management/webhooks");
 
-console.log(hooks);
-
 const db = require("./management/db").db("cardano");
 
 app.use(json());
