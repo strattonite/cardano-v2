@@ -1,11 +1,12 @@
 require("dotenv").config();
 const app = require("express")();
 const { json } = require("body-parser");
-const db = require("./management/db").db("cardano");
 const createWallet = require("./management/create-wallets");
 const buildTx = require("./transactions/build");
 const subTx = require("./transactions/submit");
-const poll = require("./management/poll");
+const { poll } = require("./management/poll");
+
+const db = require("./management/db").db("cardano");
 
 app.use(json());
 app.listen(process.env.PORT);
