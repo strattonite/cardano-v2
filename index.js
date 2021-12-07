@@ -94,6 +94,7 @@ app.post(
           id = await subTx(tx);
           success = true;
         } catch (err) {
+          console.error(err);
           id = err.message;
           success = false;
         }
