@@ -18,6 +18,10 @@ const client = new WebhookClient({
  */
 const transaction = async (txs) => {
   try {
+    const split = [];
+    for (let i = 0; i < Math.ceil(txs / 10); i++) {
+      split.push(txs.slice(i * 10, (i + 1) * 10));
+    }
     const failed = (t) => {
       return new MessageEmbed({
         color: "RED",
@@ -48,10 +52,6 @@ const transaction = async (txs) => {
     }
   } catch (err) {
     console.error(err);
-  }
-  const split = [];
-  for (let i = 0; i < Math.ceil(txs / 10); i++) {
-    split.push(txs.slice(i * 10, (i + 1) * 10));
   }
 };
 

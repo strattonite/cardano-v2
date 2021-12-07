@@ -1,26 +1,19 @@
 process.env.NODE_ENV == "test";
 require("dotenv").config();
+const { BlockFrostAPI } = require("@blockfrost/blockfrost-js");
 
-const create = require("./management/create-wallets");
-const { poll, pollTest } = require("./management/poll");
-const conf = require("./test-conf.json");
-const db = require("./management/db");
-const build = require("./transactions/build");
-const submit = require("./transactions/submit");
-
-db.once("connectionReady", async () => {
-  const col = db.db("cardano").collection("wallets");
-  let test1 = await col.findOne({ name: "test1" });
-  let test2 = await col.findOne({ name: "test2" });
-  test1 = await pollTest(test1);
-  test2 = await pollTest(test2);
-  //   const payments = [
-  //     {
-  //       address: test2.address,
-  //       amount: 2000000,
-  //     },
-  //   ];
-  //   const built = build(payments, test1);
-  //   const sum = await submit(built);
-  //   console.log(sum);
+const api = new BlockFrostAPI({
+  projectId: "mainnethl6utucFUaD3CONOrtFyLpFTbnz4TZnB",
 });
+
+(async () => {
+  try {
+    console.log(
+      await api.addressesUtxos(
+        "addr1qy3vdcz4h3esd7804dnj99lxkusyppygjyk09r8wnjh4ef4sf4qat35ene3992kdeg575a9fck5hlrw7x7ajg0p5u3eqmmu5ng"
+      )
+    );
+  } catch (err) {
+    console.error(err);
+  }
+})();
