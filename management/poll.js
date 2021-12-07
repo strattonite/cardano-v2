@@ -31,6 +31,8 @@ const poll = async (wallet) => {
       count: 100,
       order: "desc",
     });
+    console.log(utxos_);
+    console.log(wallet.utxos);
     utxos = addNew(wallet.utxos, utxos_);
     if (!check(wallet, utxos_)) {
       console.log("checking balance")(
@@ -54,9 +56,6 @@ const poll = async (wallet) => {
         }
       );
       return wallet;
-    } else {
-      console.log(utxos_);
-      console.log(wallet.utxos);
     }
   } catch (err) {
     if (err.response?.status == 404 || err.status_code == 404) {
