@@ -59,7 +59,7 @@ const pollWallets = async () => {
 const findWallet = async (n) => wallets.filter(({ name }) => name == n)[0];
 
 const getInt = setInterval(getWallets, 2500);
-const pollInt = setInterval(pollWallets, 1 / process.env.RATE_LIMIT);
+const pollInt = setInterval(pollWallets, 1000 / process.env.RATE_LIMIT);
 
 app.get(
   "/wallets",
