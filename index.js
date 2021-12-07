@@ -5,6 +5,9 @@ const createWallet = require("./management/create-wallets");
 const buildTx = require("./transactions/build");
 const subTx = require("./transactions/submit");
 const { poll } = require("./management/poll");
+const hooks = require("./management/webhooks");
+
+console.log(hooks);
 
 const db = require("./management/db").db("cardano");
 
@@ -99,7 +102,7 @@ app.post(
         return { id, success, name };
       })
     );
-
+    hooks.transaction(txs);
     res.json(txs);
     next();
   })
