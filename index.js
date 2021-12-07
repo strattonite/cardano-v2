@@ -89,8 +89,8 @@ app.post(
         const w = findWallet(name);
         let id, success;
         try {
+          console.log(payments);
           if (!w) throw new Error("could not find wallet: " + name);
-
           const tx = buildTx(payments, w);
           id = await subTx(tx);
           success = true;
