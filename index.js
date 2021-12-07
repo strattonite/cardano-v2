@@ -57,7 +57,7 @@ const pollWallets = async () => {
   }
 };
 
-const findWallet = async (n) => wallets.filter(({ name }) => name == n)[0];
+const findWallet = (n) => wallets.filter(({ name }) => name == n)[0];
 
 const getInt = setInterval(getWallets, 2500);
 const pollInt = setInterval(pollWallets, 1000 / process.env.RATE_LIMIT);
@@ -90,8 +90,7 @@ app.post(
         let id, success;
         try {
           if (!w) throw new Error("could not find wallet: " + name);
-          console.log(payments);
-          console.log(w);
+
           const tx = buildTx(payments, w);
           id = await subTx(tx);
           success = true;
