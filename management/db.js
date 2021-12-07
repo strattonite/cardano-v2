@@ -4,6 +4,8 @@ const { MongoClient } = require("mongodb");
 const mongo = new MongoClient(process.env.MONGO_URI);
 mongo.connect();
 
+// process.on("SIGINT", mongo.close);
+
 /**
  * @typedef {Object} CardanoBalance
  * @property {string} unit
@@ -33,7 +35,7 @@ mongo.connect();
  * @typedef {Object} MongoWallet
  * @property {string} address
  * @property {PoolAsset[]} assets
- * @property {string[]} mnemonic
+ * @property {string} mnemonic
  * @property {string} name
  * @property {string} privKey
  * @property {number} balance

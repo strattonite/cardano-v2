@@ -13,14 +13,15 @@ app.listen(process.env.PORT);
 
 const apiKeys = process.env.API_KEYS.split(/\|/g);
 
-const wrap = async (handler) => {
-  return async (req, res, next) => {
+const wrap = (handler) => {
+  return async function (req, res, next) {
     if (!apiKeys.includes(req.headers["x-api-key"])) {
       res.status(403).send();
     } else {
       try {
         await handler(req, res, next);
       } catch (err) {
+        console.error(err);
         res.status(500).send(err.message);
       }
     }
@@ -31,15 +32,28 @@ const wrap = async (handler) => {
 let wallets = [];
 
 const getWallets = async () => {
-  const w = await db.collection("wallets").find({}).toArray();
-  wallets = w;
-  return w;
+  try {
+    const w = await db.collection("wallets").find({}).toArray();
+    wallets = w;
+    return w;
+  } catch (err) {
+    console.log("error getting wallets");
+    console.error(err);
+  }
 };
 
 let n = 0;
 const pollWallets = async () => {
-  await poll(wallets[n % wallets.length]);
-  n++;
+  try {
+    const w = wallets[n % wallets.length];
+    if (w) {
+      await poll(w);
+      n++;
+    }
+  } catch (err) {
+    console.log("error polling wallets");
+    console.error(err);
+  }
 };
 
 const findWallet = async (n) => wallets.filter(({ name }) => name == n)[0];
@@ -94,6 +108,9 @@ app.post(
 const shutdown = () => {
   clearInterval(getInt);
   clearInterval(pollInt);
+  app.removeAllListeners();
 };
 
-process.on("SIGINT", shutdown);
+setTimeout(getWallets, 2500);
+
+// process.on("SIGINT", shutdown);

@@ -19,19 +19,15 @@ const check = (wallet, utxos) =>
 
 /**
  * @param {import("./db").MongoWallet} wallet
- * @param {string} [address]
  */
-const poll = async (wallet, address) => {
+const poll = async (wallet) => {
   n++;
   let lovelaces, tokens, utxos_, utxos;
   try {
-    utxos_ = await apis[n % apis.length].addressesUtxos(
-      address || wallet.address,
-      {
-        count: 100,
-        order: "desc",
-      }
-    );
+    utxos_ = await apis[n % apis.length].addressesUtxos(wallet.address, {
+      count: 100,
+      order: "desc",
+    });
     utxos = addNew(wallet.utxos, utxos_);
     if (!check(wallet, utxos)) {
       ({ lovelaces, tokens } = await poolCheck(wallet));
@@ -44,10 +40,6 @@ const poll = async (wallet, address) => {
         assets: tokens,
         utxos,
       };
-      if (address) {
-        wallet.address = address;
-        s.address = address;
-      }
       await db.collection("wallets").updateOne(
         {
           name: wallet.name,
@@ -125,8 +117,6 @@ const pollTest = async (wallet) => {
       b.amount.filter((a) => a.unit == "lovelace")[0].quantity
     );
     const u = await api.addressesUtxos(wallet.address);
-    console.log(balance);
-    console.log(u);
     wallet.balance = balance;
     wallet.utxos = u;
     return wallet;

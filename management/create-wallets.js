@@ -13,7 +13,7 @@ const col = require("./db").db("cardano").collection("wallets");
 const createWallet = async ({ name, mnemonic }) => {
   let entropy;
   mnemonic
-    ? (entropy = bip.mnemonicToEntropy(mnemonic.join(" ")))
+    ? (entropy = bip.mnemonicToEntropy(mnemonic))
     : ({ mnemonic, entropy } = getEntropy());
 
   return await getWallet({
@@ -83,13 +83,12 @@ const fromEntropy = (ent) => {
   const stake = account.derive(2).derive(0).to_public();
 
   const address = serialization.BaseAddress.new(
-    serialization.NetworkInfo.testnet().network_id(),
-    // serialization.NetworkInfo.mainnet().network_id(),
+    serialization.NetworkInfo.mainnet().network_id(),
     serialization.StakeCredential.from_keyhash(utxoPub.to_raw_key().hash()),
     serialization.StakeCredential.from_keyhash(stake.to_raw_key().hash())
   )
     .to_address()
-    .to_bech32("addr_test");
+    .to_bech32("addr");
 
   key = key.to_bech32();
 
