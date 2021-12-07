@@ -1,22 +1,33 @@
 require("dotenv").config();
 const { BlockFrostAPI } = require("@blockfrost/blockfrost-js");
 const { default: axios } = require("axios");
+const { readFileSync } = require("fs");
 
-const api = new BlockFrostAPI({
-  projectId: process.env.BLOCKFROST_KEY,
-});
+const apis = readFileSync("./bf-keys.txt", { encoding: "utf-8" })
+  .split(/\r?\n/g)
+  .map((l) => l.trim())
+  .map((key) => {
+    return new BlockFrostAPI({ projectId: key });
+  });
+
+let txn_ = 0;
 
 /**
  * @param {import("@emurgo/cardano-serialization-lib-nodejs").Transaction} tx
  */
 const submit = async (tx) => {
-  return process.env.SUBMIT_TYPE == "blockfrost"
-    ? await blockfrost(tx)
-    : await subApi(tx);
+  txn_++;
+  try {
+    return process.env.SUBMIT_TYPE == "blockfrost"
+      ? await blockfrost(tx)
+      : await subApi(tx);
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 const blockfrost = async (tx) => {
-  return await api.txSubmit(tx.to_bytes());
+  return await apis[txn_ % apis.length].txSubmit(tx.to_bytes());
 };
 
 const subApi = async (tx) => {
