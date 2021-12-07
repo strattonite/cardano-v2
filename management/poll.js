@@ -12,6 +12,8 @@ const apis = readFileSync("./bf-keys.txt", { encoding: "utf-8" })
     return new BlockFrostAPI({ projectId: key });
   });
 
+console.log(apis.length);
+
 let n = 0;
 
 const check = (wallet, utxos) =>
@@ -21,6 +23,7 @@ const check = (wallet, utxos) =>
  * @param {import("./db").MongoWallet} wallet
  */
 const poll = async (wallet) => {
+  console.log(new Date().toISOString());
   n++;
   let lovelaces, tokens, utxos_, utxos;
   try {
