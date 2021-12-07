@@ -21,6 +21,7 @@ const check = (wallet, utxos) =>
  * @param {import("./db").MongoWallet} wallet
  */
 const poll = async (wallet) => {
+  console.log(new Date().toISOString());
   n++;
   let lovelaces, tokens, utxos_, utxos;
   try {
